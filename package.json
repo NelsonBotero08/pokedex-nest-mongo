@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
+    "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/mapped-types": "*",
     "@nestjs/mongoose": "^11.0.3",
@@ -30,6 +31,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "install": "^0.13.0",
+    "joi": "^17.13.3",
     "mongoose": "^8.14.0",
     "npm": "^11.3.0",
     "o": "^2.3.2",

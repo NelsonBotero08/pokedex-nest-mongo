@@ -10,13 +10,23 @@ import { isValidObjectId, Model } from 'mongoose';
 import { Pokemon } from './entities/pokemon.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import * as request from 'supertest';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PokemonService {
+
+  private defautlLimit: number;
+
   constructor(
     @InjectModel(Pokemon.name)
     private readonly pokemonModel: Model<Pokemon>,
-  ) {}
+    private readonly configService: ConfigService,
+  ) {
+
+    this.defautlLimit = configService.get<number>('defaultLimit')!
+  
+  }
 
   async create(createPokemonDto: CreatePokemonDto) {
     createPokemonDto.name = createPokemonDto.name.toLocaleLowerCase();
@@ -30,8 +40,16 @@ export class PokemonService {
     }
   }
 
-  findAll() {
-    return this.pokemonModel.find().exec();
+  findAll( paginationDto: PaginationDto ) {
+
+    const { limit = this.defautlLimit , offset = 0 } = paginationDto // paginacion
+    
+    return this.pokemonModel.find()
+      .limit(limit)
+      .sort({
+        no:1
+      })// orden de las columnas segun parametro
+      .select('-__V');//columna que no se desea ver
   }
 
   async findOne(term: string) {
